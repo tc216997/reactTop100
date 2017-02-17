@@ -1,0 +1,100 @@
+var container = document.getElementById('container');
+var recentLink = 'https://fcctop100.herokuapp.com/api/fccusers/top/recent';
+var alltimeLink = 'https://fcctop100.herokuapp.com/api/fccusers/top/alltime';
+var recent = [];
+var alltime;
+var columnLabels = [
+  { 'id': 'rankHeader',
+    'label': 'Rank'
+  },
+  {
+    'id': 'camperHeader',
+    'label': 'FCC Campers'
+  },
+  {
+    'id': 'recentHeader',
+    'label': 'Recent points'
+  },
+  {
+    'id': 'alltimeHeader',
+    'label': 'All time points'
+  }
+];
+
+var Table = React.createClass({
+  
+  generateHeaders: function () {
+    //generate header columns
+    var cols = this.props.cols;
+    var tabledata = [];
+    var string = 'points';
+    for (var item in cols) {
+      var tableLabel = cols[item].label;
+      // if label contain the word points
+      if (tableLabel.includes(string)) {
+        tabledata.push(<th id={cols[item].id} onClick={this.clickHandler}>{cols[item].label}<i className='fa fa-fw fa-sort'></i></th>);
+      } else {
+        tabledata.push(<th id={cols[item].id}>{cols[item].label}</th>);
+      }
+    }
+    return tabledata
+  },
+  
+  generateCells: function() {
+    //generate rows and cells
+    var data = this.props.data;
+    var count = 1;
+    return data.map(function(obj){
+      var link = 'https://www.freecodecamp.com/' + obj.username;
+      var tabledata = []
+      tabledata.push(<td className="tableCells rank">{count}</td>);
+      tabledata.push(<td className="tableCells userName"><a href={link} target="_blank"><span className="imgSpan"><img src={obj.img} className="img"/><span className="usernameSpan">{obj.username}</span></span></a></td>);
+      tabledata.push(<td className="tableCells recent">{obj.recent}</td>);
+      tabledata.push(<td className="tableCells alltime">{obj.alltime}</td>);
+      count++;
+      return <tr>{tabledata}</tr>
+    })
+  },
+  
+  clickHandler: function(event) {
+    // re renders the page depending on whether recent or all time points were clicked
+    if (event.target.id === 'recentHeader') {
+      ReactDOM.render(<Table cols={columnLabels} data={recent}/>, container);
+    } else {
+      ReactDOM.render(<Table cols={columnLabels} data={alltime}/>, container);
+    }
+  },
+  
+  render: function() {
+    var headerItems = this.generateHeaders();
+    var rowItems = this.generateCells();
+    return (
+      <div id="mainDiv">
+        <h2 id="leaderboardHeading"><a href="http://www.freecodecamp.com" target="_blank">FreeCodeCamp <i className="fa fa-fw fa-free-code-camp"></i></a> Leaderboard</h2>
+        <div className="panel panel-default">
+          <table className="table table-bordered">
+            <thead>
+              <tr id="headerRow">{headerItems}</tr>
+            </thead>
+            <tbody id="rowBody"> {rowItems} </tbody>
+          </table>
+        </div>
+        <h4 id="footer">*** By<a href="http://www.freecodecamp.com/tc216997" target="_blank"> @tc216997</a> ***</h4>
+      </div>
+    )
+  }, 
+  
+})
+
+ReactDOM.render(<Table cols={columnLabels} data={recent}/>, container);
+// first initial call to get data by recent points 
+// makes a second call to get data by alltime points
+// when user click the alltime points, theres no need to get json again
+// making a tradeoff for speed with space
+$.getJSON(recentLink, function(data){
+  recent = data;
+  ReactDOM.render(<Table cols={columnLabels} data={recent}/>, container);
+  $.getJSON(alltimeLink, function(data) {
+    alltime = data;
+  })
+})

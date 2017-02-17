@@ -1,0 +1,86 @@
+
+.img {
+ width: 50px;
+ height: 50px;
+}
+
+.table{
+  border-radius: 5px;
+}
+img{
+  border-radius: 5px;
+}
+.imgSpan{
+  margin-left: 3px;
+}
+.usernameSpan {
+  margin-left: 5px;
+}
+#leaderboardHeading{
+  margin-top:100px;
+}
+.fa-free-code-camp-{
+  vertical-align: middle
+}
+
+.panel {
+  margin-top: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+/** start alignment**/
+#leaderboardHeading{
+  text-align: center;
+}
+
+#footer{
+  text-align: center;
+}
+
+#recentHeader{
+  text-align: center;
+}
+.table-bordered{
+  border: 5px solid black;
+}
+.table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+#alltimeHeader{
+  text-align: center;
+}
+#rankHeader{
+  text-align: center;
+}
+.rank {
+  text-align: center;
+}
+.recent {
+  text-align: center;
+}
+
+.alltime {
+  text-align: center;
+}
+/**end table alignment**/
+
+
+
+/** colors **/
+body{
+  background-color: #99ff99;
+}
+#headerRow {
+  font-size: 20px;
+  background-color:#9999ff;  
+}
+
+#rowBody{
+  background-color: #ccccff;  
+}
+
+.tableCells {
+  font-size: 20px;
+}
+/** colors and font size**/
